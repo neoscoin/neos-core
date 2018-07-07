@@ -1,0 +1,26 @@
+[Unit]
+Description=NEOS's distributed currency daemon
+After=network.target
+
+[Service]
+User=neos
+Group=neos
+
+Type=forking
+PIDFile=/var/lib/neosd/neosd.pid
+
+ExecStart=/usr/bin/neosd -daemon -pid=/var/lib/neosd/neosd.pid \
+          -conf=/etc/neos/neos.conf -datadir=/var/lib/neosd
+
+ExecStop=-/usr/bin/neos-cli -conf=/etc/neos/neos.conf \
+         -datadir=/var/lib/neosd stop
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

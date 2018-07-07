@@ -1,0 +1,26 @@
+# /etc/conf.d/neosd: config file for /etc/init.d/neosd
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/neos/neos.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/neosd"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/neosd.pid"
+
+# Where to write neosd data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/neosd"
+
+# User and group to own neosd process
+#BITCOIND_USER="neos"
+#BITCOIND_GROUP="neos"
+
+# Path to neosd executable
+#BITCOIND_BIN="/usr/bin/neosd"
+
+# Nice value to run neosd under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS=""

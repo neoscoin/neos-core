@@ -1,0 +1,11 @@
+[Protocol]
+exec=neos-qt '%u'
+protocol=neos
+input=none
+output=none
+helper=true
+listing=
+reading=false
+writing=false
+makedir=false
+deleting=false

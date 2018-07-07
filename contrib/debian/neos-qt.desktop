@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Neos
+Comment=Neos P2P Cryptocurrency
+Comment[fr]=Neos, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Neos, eşten eşe kriptografik sanal para birimi
+Exec=neos-qt %u
+Terminal=false
+Type=Application
+Icon=neos128
+MimeType=x-scheme-handler/neos;
+Categories=Office;Finance;
