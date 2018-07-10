@@ -1593,7 +1593,7 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex)
 
 double ConvertBitsToDouble(unsigned int nBits)
 {
-    int nShift = (nBits >> 24) & 0xff;
+    int nShift = (nBits >> 20) & 0xff;
 
     double dDiff =
         (double)0x0000ffff / (double)(nBits & 0x00ffffff);
@@ -1640,6 +1640,8 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCou
 
 bool IsInitialBlockDownload()
 {
+   return false;
+
     LOCK(cs_main);
     if (fImporting || fReindex || chainActive.Height() < Checkpoints::GetTotalBlocksEstimate())
         return true;

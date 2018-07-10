@@ -209,6 +209,7 @@ libbitcoin_server_a_SOURCES = \
   timedata.cpp \
   txdb.cpp \
   txmempool.cpp \
+  utiltime.cpp \
   validationinterface.cpp \
   $(JSON_H) \
   $(BITCOIN_CORE_H)
@@ -255,35 +256,45 @@ libbitcoin_wallet_a_SOURCES = \
 crypto_libbitcoin_crypto_a_CFLAGS = -fPIC
 crypto_libbitcoin_crypto_a_CPPFLAGS = $(BITCOIN_CONFIG_INCLUDES)
 crypto_libbitcoin_crypto_a_SOURCES = \
-  crypto/sha1.cpp \
-  crypto/sha256.cpp \
-  crypto/sha512.cpp \
-  crypto/hmac_sha256.cpp \
-  crypto/rfc6979_hmac_sha256.cpp \
-  crypto/hmac_sha512.cpp \
-  crypto/scrypt.cpp \
-  crypto/ripemd160.cpp \
   crypto/aes_helper.c \
   crypto/blake.c \
   crypto/bmw.c \
+  crypto/common.h \
+  crypto/cubehash.c \
+  crypto/echo.c \
   crypto/groestl.c \
+  crypto/hmac_sha256.cpp \
+  crypto/hmac_sha256.h \
+  crypto/hmac_sha512.cpp \
+  crypto/hmac_sha512.h \
   crypto/jh.c \
   crypto/keccak.c \
+  crypto/luffa.c \
+  crypto/shavite.c \
+  crypto/simd.c \
   crypto/skein.c \
-  crypto/common.h \
-  crypto/sha256.h \
-  crypto/sha512.h \
-  crypto/hmac_sha256.h \
+  crypto/rfc6979_hmac_sha256.cpp \
   crypto/rfc6979_hmac_sha256.h \
-  crypto/hmac_sha512.h \
-  crypto/scrypt.h \
-  crypto/sha1.h \
+  crypto/ripemd160.cpp \
   crypto/ripemd160.h \
+  crypto/scrypt.cpp \
+  crypto/scrypt.h \
+  crypto/sha1.cpp \
+  crypto/sha1.h \
+  crypto/sha256.cpp \
+  crypto/sha256.h \
+  crypto/sha512.cpp \
+  crypto/sha512.h \
   crypto/sph_blake.h \
   crypto/sph_bmw.h \
+  crypto/sph_cubehash.h \
+  crypto/sph_echo.h \
   crypto/sph_groestl.h \
   crypto/sph_jh.h \
   crypto/sph_keccak.h \
+  crypto/sph_luffa.h \
+  crypto/sph_shavite.h \
+  crypto/sph_simd.h \
   crypto/sph_skein.h \
   crypto/sph_types.h
 
@@ -317,12 +328,14 @@ libbitcoin_common_a_SOURCES = \
   netbase.cpp \
   protocol.cpp \
   pubkey.cpp \
+  timedata.cpp \
   script/interpreter.cpp \
   script/script.cpp \
   script/sign.cpp \
   script/standard.cpp \
   script/script_error.cpp \
   spork.cpp \
+  utiltime.cpp \
   $(BITCOIN_CORE_H)
 
 # util: shared between all executables.
@@ -442,7 +455,9 @@ libbitcoinconsensus_la_SOURCES = \
   script/script.cpp \
   script/interpreter.cpp \
   script/bitcoinconsensus.cpp \
+  timedata.cpp \
   uint256.cpp \
+  utiltime.cpp \
   utilstrencodings.cpp
 
 if GLIBC_BACK_COMPAT

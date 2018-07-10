@@ -51,13 +51,14 @@ static void convertSeed6(std::vector<CAddress>& vSeedsOut, const SeedSpec6* data
 //   (no blocks before with a timestamp after, none after with
 //    timestamp before)
 // + Contains no strange transactions
+// HERE
 static Checkpoints::MapCheckpoints mapCheckpoints =
     boost::assign::map_list_of
-    (0, uint256("00000c3e13ffa371a59aea4f8f17b47135ae71db289557ddf1b7cd807223591f"));
+    (0, uint256("0x"));
     //(1, uint256("91dfe065e700b4faad7df95998a9352b93ce645ffbb65e9841c7c744583c3b40")); // TODO change to premine block info
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    1528148532, // * UNIX timestamp of last checkpoint block
+    1531231817, // * UNIX timestamp of last checkpoint block
     1000,    // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
     2000        // * estimated number of transactions per day after checkpoint
@@ -112,7 +113,7 @@ public:
         nModifierUpdateBlock = 700;
         nMaxMoneyOut = 4000000 * COIN;
 
-        const char* pszTimestamp = "A new era for Neos is on the horizon";
+        const char* pszTimestamp = "Neos V3 and the Telstar Satellite Launched";
         CMutableTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -123,13 +124,13 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime = 1528148532;
-        genesis.nBits = 0x1e0ffff0;
-        genesis.nNonce = 1522038;
+        genesis.nTime = 1231006505;
+        genesis.nBits = 545259519;
+        genesis.nNonce = 2083236893;
 
         hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256("0x00000c3e13ffa371a59aea4f8f17b47135ae71db289557ddf1b7cd807223591f"));
-        assert(genesis.hashMerkleRoot == uint256("0xde65e4590afe931ca4b2f4dd21ce20e218b3a9512c21dc9eb147c3f69b9634a4"));
+        assert(hashGenesisBlock == uint256("0x4abd2ca179e88fc4b675d204dfcbbe71294486dc65c125d85cb8d5b83b059abf"));
+        assert(genesis.hashMerkleRoot == uint256("0xbd06038939393a6fdc59972a796b70785c903f6ef08ef481613e6299fa85c2e1"));
 
 	vSeeds.push_back(CDNSSeedData("seeds",  "nodes.neoscoin.com"));
 
@@ -146,7 +147,7 @@ public:
 
         fRequireRPCPassword = true;
         fMiningRequiresPeers = true;
-        fAllowMinDifficultyBlocks = false;
+        fAllowMinDifficultyBlocks = true;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
