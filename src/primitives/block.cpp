@@ -17,6 +17,11 @@ uint256 CBlockHeader::GetHash() const
     return HashX11(BEGIN(nVersion), END(nNonce));
 }
 
+uint256 CBlockHeader::GetPoWHash() const
+{
+    return HashX11(BEGIN(nVersion), END(nNonce));
+}
+
 uint256 CBlock::BuildMerkleTree(bool* fMutated) const
 {
     /* WARNING! If you're reading this because you're learning about crypto
