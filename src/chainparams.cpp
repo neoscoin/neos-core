@@ -125,11 +125,11 @@ public:
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
         genesis.nTime = 1231006505;
-        genesis.nBits = 545259519;
-        genesis.nNonce = 2083236893;
+        genesis.nBits = 0x1e0ffff0;
+        genesis.nNonce = 2083325322;
 
         hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256("0x4abd2ca179e88fc4b675d204dfcbbe71294486dc65c125d85cb8d5b83b059abf"));
+        assert(hashGenesisBlock == uint256("0x0000074de088d97155aa8ea2901a77a5a7ac4fb169d8a60c8b7c5c804f345d04"));
         assert(genesis.hashMerkleRoot == uint256("0xbd06038939393a6fdc59972a796b70785c903f6ef08ef481613e6299fa85c2e1"));
 
 	vSeeds.push_back(CDNSSeedData("seeds",  "nodes.neoscoin.com"));
