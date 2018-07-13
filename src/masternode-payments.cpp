@@ -328,7 +328,9 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
 
         LogPrintf("Masternode payment of %s to %s\n", FormatMoney(masternodePayment).c_str(), address2.ToString().c_str());
     } else {
-      txNew.vout[0].nValue = blockValue;
+      if (!fProofOfStake) {
+        txNew.vout[0].nValue = blockValue;
+      }
     }
 }
 
