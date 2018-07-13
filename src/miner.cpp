@@ -105,13 +105,19 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
     if (Params().MineBlocksOnDemand())
         pblock->nVersion = GetArg("-blockversion", pblock->nVersion);
 
+    CBlockIndex* pindexPrev = chainActive.Tip();
+    CAmount blockValue = GetBlockValue(pindexPrev->nHeight);
+
     // Create coinbase tx
     CMutableTransaction txNew;
     txNew.vin.resize(1);
     txNew.vin[0].prevout.SetNull();
+    txNew.vin[0].scriptSig = CScript() << pindexPrev->nHeight + 1 << OP_0;
     txNew.vout.resize(1);
     txNew.vout[0].scriptPubKey = scriptPubKeyIn;
+    txNew.vout[0].nValue = blockValue;
     pblock->vtx.push_back(txNew);
+
     pblocktemplate->vTxFees.push_back(-1);   // updated at end
     pblocktemplate->vTxSigOps.push_back(-1); // updated at end
 
@@ -121,7 +127,6 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
     if (fProofOfStake) {
         boost::this_thread::interruption_point();
         pblock->nTime = GetAdjustedTime();
-        CBlockIndex* pindexPrev = chainActive.Tip();
         pblock->nBits = GetNextWorkRequired(pindexPrev, pblock);
         CMutableTransaction txCoinStake;
         int64_t nSearchTime = pblock->nTime; // search to current time
@@ -332,6 +337,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
         }
 
         if (!fProofOfStake) {
+	    txNew.vout[0].nValue += nFees;
             //Masternode and general budget payments
             FillBlockPayee(txNew, nFees, fProofOfStake);
 
@@ -404,6 +410,7 @@ CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey, CWallet* pwallet,
         return NULL;
 
     CScript scriptPubKey = CScript() << ToByteVector(pubkey) << OP_CHECKSIG;
+    LogPrintf("CreateNewBlockWithKey() : scriptPubKey: %s", scriptPubKey.ToString().c_str());
     return CreateNewBlock(scriptPubKey, pwallet, fProofOfStake);
 }
 
