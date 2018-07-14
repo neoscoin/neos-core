@@ -242,10 +242,6 @@ bool CBlockTreeDB::LoadBlockIndexGuts()
                 pindexNew->nStakeTime = diskindex.nStakeTime;
                 pindexNew->hashProofOfStake = diskindex.hashProofOfStake;
 
-                if (pindexNew->nHeight <= Params().LAST_POW_BLOCK()) {
-                    if (!CheckProofOfWork(pindexNew->GetBlockHash(), pindexNew->nBits))
-                        return error("LoadBlockIndex() : CheckProofOfWork failed: %s", pindexNew->ToString());
-                }
                 // ppcoin: build setStakeSeen
                 if (pindexNew->IsProofOfStake())
                     setStakeSeen.insert(make_pair(pindexNew->prevoutStake, pindexNew->nStakeTime));
