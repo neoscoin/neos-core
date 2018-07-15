@@ -3022,6 +3022,11 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
 {
     // These are checks that are independent of context.
 
+    // Make sure that we don't check PoW on PoS blocks
+    if (chainActive.Height()+1 > Params().LAST_POW_BLOCK()) {
+      fCheckPOW = false;
+    }
+
     // Check that the header is valid (particularly PoW).  This is mostly
     // redundant with the call in AcceptBlockHeader.
     if (!CheckBlockHeader(block, state, fCheckPOW))
