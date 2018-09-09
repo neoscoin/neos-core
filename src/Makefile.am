@@ -455,7 +455,6 @@ libbitcoinconsensus_la_SOURCES = \
   script/script.cpp \
   script/interpreter.cpp \
   script/bitcoinconsensus.cpp \
-  timedata.cpp \
   uint256.cpp \
   utiltime.cpp \
   utilstrencodings.cpp
