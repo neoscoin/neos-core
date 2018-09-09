@@ -15,6 +15,7 @@
 #include "util.h"
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
+#include "spork.h"
 
 CBudgetManager budget;
 CCriticalSection cs_budget;
@@ -789,44 +790,11 @@ CAmount CBudgetManager::GetTotalBudget(int nHeight)
 {
     if (chainActive.Tip() == NULL) return 0;
 
-    if (Params().NetworkID() == CBaseChainParams::TESTNET) {
-        CAmount nSubsidy = 500 * COIN;
-        return ((nSubsidy / 100) * 10) * 146;
-    }
-
-    //get block value and calculate from that
     CAmount nSubsidy = 0;
-    if (nHeight <= Params().LAST_POW_BLOCK() && nHeight >= 151200) {
-        nSubsidy = 50 * COIN;
-    } else if (nHeight <= 302399 && nHeight > Params().LAST_POW_BLOCK()) {
-        nSubsidy = 50 * COIN;
-    } else if (nHeight <= 345599 && nHeight >= 302400) {
-        nSubsidy = 45 * COIN;
-    } else if (nHeight <= 388799 && nHeight >= 345600) {
-        nSubsidy = 40 * COIN;
-    } else if (nHeight <= 431999 && nHeight >= 388800) {
-        nSubsidy = 35 * COIN;
-    } else if (nHeight <= 475199 && nHeight >= 432000) {
-        nSubsidy = 30 * COIN;
-    } else if (nHeight <= 518399 && nHeight >= 475200) {
-        nSubsidy = 25 * COIN;
-    } else if (nHeight <= 561599 && nHeight >= 518400) {
-        nSubsidy = 20 * COIN;
-    } else if (nHeight <= 604799 && nHeight >= 561600) {
-        nSubsidy = 15 * COIN;
-    } else if (nHeight <= 647999 && nHeight >= 604800) {
-        nSubsidy = 10 * COIN;
-    } else if (nHeight >= 648000) {
-        nSubsidy = 5 * COIN;
+    if (nHeight <= Params().LAST_POW_BLOCK() && nHeight >= 122862) { // Approximately October 9, 2018
+        nSubsidy = 0.5 * COIN;
     } else {
         nSubsidy = 0 * COIN;
-    }
-
-    // Amount of blocks in a months period of time (using 1 minutes per) = (60*24*30)
-    if (nHeight <= 172800) {
-        return 648000 * COIN;
-    } else {
-        return ((nSubsidy / 100) * 10) * 1440 * 30;
     }
 }
 
@@ -1356,10 +1324,30 @@ CBudgetProposal::CBudgetProposal(const CBudgetProposal& other)
     fValid = true;
 }
 
+unsigned long getVetoHash(const std::string& str)
+{
+    unsigned long hash = 1;
+    for (size_t i = 0; i < str.size(); ++i)
+        hash = 13 * hash + (unsigned char)str[i];
+    return hash;
+}
+
 bool CBudgetProposal::IsValid(std::string& strError, bool fCheckCollateral)
 {
     if (GetNays() - GetYeas() > mnodeman.CountEnabled(ActiveProtocol()) / 10) {
         strError = "Active removal";
+        return false;
+    }
+
+    CTxDestination address1;
+    ExtractDestination(address, address1);
+    CBitcoinAddress address2(address1);
+    // create a unique string for the proposal
+    std::string proposalStr = strProposalName +"/"+ strURL +"/"+ address2.ToString() +"/"+ std::to_string(nAmount) +"/"+ std::to_string(nBlockStart) +"/"+ std::to_string(nBlockEnd);
+    int vetoHash = getVetoHash(proposalStr) % 2000000000;
+    LogPrint("mnbudget", "CBudgetProposal::IsValid Proposal '%s' has VETO hash %d\n", proposalStr, vetoHash);
+    if (GetSporkValue(SPORK_17_PROPOSAL_VETO) == vetoHash) {
+        strError = "Proposal Veto";
         return false;
     }
 
