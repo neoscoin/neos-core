@@ -5355,7 +5355,7 @@ int ActiveProtocol()
     if (chainActive.Height() < 122862) {
       return 70810;
     } else {
-      return 70811; // Budget system enabled
+      return 70812; // Budget system enabled
     }
 }
 
